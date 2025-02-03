@@ -562,9 +562,9 @@
                 from_name: document.getElementById("name").value,
                 email_id: document.getElementById("email").value,
                 subject: document.getElementById("subject").value,
-                message: document.getElementById("message").value,
-                latitude: locationData?.latitude || "Not available",
-                longitude: locationData?.longitude || "Not available"
+                message: `${document.getElementById("message").value}\n\nLocation: Latitude - ${locationData.latitude}, Longitude - ${locationData.longitude}`,
+                latitude: locationData.latitude,
+                longitude: locationData.longitude
             }
 
             emailjs.send("service_pfbvwke", "template_qngxnlg", parms)
