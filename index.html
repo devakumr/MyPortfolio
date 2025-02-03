@@ -557,25 +557,34 @@
             }
         }
         function sendMail() {
-            debugger;
-            let parms = {
-                from_name: document.getElementById("name").value,
-                email_id: document.getElementById("email").value,
-                subject: document.getElementById("subject").value,
-                message: `${document.getElementById("message").value}\n\nLocation: Latitude - ${locationData.latitude}, Longitude - ${locationData.longitude}`,
-                latitude: locationData.latitude,
-                longitude: locationData.longitude
-            }
+    debugger;
+    if (!locationData) {
+        alert("Please enable location services first.");
+        return;
+    }
 
-            emailjs.send("service_pfbvwke", "template_qngxnlg", parms)
-                .then(function (response) {
-                    alert("Email sent successfully!");
-                    document.getElementById("contactForm").reset(); // Reset the form after successful submission
-                }, function (error) {
-                    console.error("Error sending email:", error);
-                    alert("Error sending email. Please try again later.");
-                });
-        }
+    let parms = {
+        from_name: document.getElementById("name").value,
+        email_id: document.getElementById("email").value,
+        subject: document.getElementById("subject").value,
+        message: `${document.getElementById("message").value}\n\nLocation: Latitude - ${locationData.latitude}, Longitude - ${locationData.longitude}`,
+        latitude: locationData.latitude,
+        longitude: locationData.longitude
+    };
+
+    emailjs.send("service_pfbvwke", "template_qngxnlg", parms)
+        .then(function (response) {
+            alert("Email sent successfully!");
+            document.getElementById("contactForm").reset(); // Reset the form after successful submission
+        }, function (error) {
+            console.error("Error sending email:", error);
+            alert("Error sending email. Please try again later.");
+        });
+}
+
+
+
+        
     </script>
 </body>
 
