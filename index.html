@@ -534,6 +534,28 @@
 
 
     <script>
+
+        let locationData = null;
+
+        function fetchLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        locationData = { latitude, longitude };
+                        document.getElementById("locationText").textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                        const mapLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+                        document.getElementById("googleMapLink").setAttribute("href", mapLink);
+                        document.getElementById("googleMapLink").style.display = "inline";
+                    },
+                    (err) => {
+                        document.getElementById("errorText").textContent = "Location access denied or unavailable.";
+                    }
+                );
+            } else {
+                document.getElementById("errorText").textContent = "Geolocation is not supported by this browser.";
+            }
+        }
         function sendMail() {
             debugger;
             let parms = {
@@ -541,6 +563,8 @@
                 email_id: document.getElementById("email").value,
                 subject: document.getElementById("subject").value,
                 message: document.getElementById("message").value,
+                latitude: locationData?.latitude || "Not available",
+                longitude: locationData?.longitude || "Not available"
             }
 
             emailjs.send("service_pfbvwke", "template_qngxnlg", parms)
