@@ -533,32 +533,48 @@
 
 
     <script>
-     
-     function sendMail(event) {
-    event.preventDefault(); // 
-
-    let parms = {
-        from_name: document.getElementById("name").value,
-        email_id: document.getElementById("email").value,
-        subject: document.getElementById("subject").value,
-        message: document.getElementById("message").value,
-    };
-
-    console.log("Sending email with parameters:", parms);
-
-    emailjs.send("service_pfbvwke", "template_qngxnlg", parms)
-        .then(response => {
-            console.log("Success:", response);
-            alert("Email sent successfully!");
-            document.getElementById("contactForm").reset();
-        })
-        .catch(error => {
-            console.error("Error sending email:", error);
-            alert("Error sending email. Check the console (F12) for details.");
-        });
-}
-
-  </script>
+        function sendMail(event) {
+            event.preventDefault(); // Prevent form submission
+    
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser.");
+                return;
+            }
+    
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    let latitude = position.coords.latitude;
+                    let longitude = position.coords.longitude;
+    
+                    let parms = {
+                        from_name: document.getElementById("name").value,
+                        email_id: document.getElementById("email").value,
+                        subject: document.getElementById("subject").value,
+                        message: document.getElementById("message").value + 
+                                 `\n\nUser Location:\nLatitude: ${latitude}\nLongitude: ${longitude}`,
+                    };
+    
+                    console.log("Sending email with parameters:", parms);
+    
+                    emailjs.send("service_pfbvwke", "template_qngxnlg", parms)
+                        .then(response => {
+                            console.log("Success:", response);
+                            alert("Email sent successfully!");
+                            document.getElementById("contactForm").reset();
+                        })
+                        .catch(error => {
+                            console.error("Error sending email:", error);
+                            alert("Error sending email. Check the console (F12) for details.");
+                        });
+                },
+                (error) => {
+                    console.error("Geolocation error:", error);
+                    alert("Failed to get location. Please allow location access.");
+                }
+            );
+        }
+    </script>
+    
     
     
 </body>
